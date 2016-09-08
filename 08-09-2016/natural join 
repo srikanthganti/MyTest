@@ -1,0 +1,36 @@
+mysql> select * from benefits;
++------+--------+---------+--------------+
+| id   | salary | vehicle | taxreduction |
++------+--------+---------+--------------+
+|    2 |  20000 | yes     |         2000 |
+|    3 |  30000 | no      |         3000 |
+|    5 |  40000 | no      |         4000 |
+|    6 |  50000 | no      |         5000 |
+|    4 |  10000 | yes     |         1000 |
++------+--------+---------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employees;
++----+----------+-------+------------+
+| id | name     | phone | address    |
++----+----------+-------+------------+
+|  1 | rahul    |   100 | vizag      |
+|  2 | vijay    |   101 | vizainagar |
+|  3 | abhay    |   102 | rajhmundry |
+|  4 | srikanth |   103 | vizag      |
+|  5 | bharat   |   104 | banglore   |
++----+----------+-------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employees natural join benefits
+    -> ;
++----+----------+-------+------------+--------+---------+--------------+
+| id | name     | phone | address    | salary | vehicle | taxreduction |
++----+----------+-------+------------+--------+---------+--------------+
+|  2 | vijay    |   101 | vizainagar |  20000 | yes     |         2000 |
+|  3 | abhay    |   102 | rajhmundry |  30000 | no      |         3000 |
+|  5 | bharat   |   104 | banglore   |  40000 | no      |         4000 |
+|  4 | srikanth |   103 | vizag      |  10000 | yes     |         1000 |
++----+----------+-------+------------+--------+---------+--------------+
+4 rows in set (0.01 sec)
+
