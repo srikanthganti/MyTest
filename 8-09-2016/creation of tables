@@ -1,0 +1,25 @@
+mysql> select * from benefits;
++--------+---------+--------------+
+| salary | vehicle | taxreduction |
++--------+---------+--------------+
+|  20000 | yes     |         2000 |
+|  30000 | no      |         3000 |
+|  40000 | no      |         4000 |
+|  50000 | no      |         5000 |
+|  10000 | yes     |         1000 |
++--------+---------+--------------+
+5 rows in set (0.01 sec)
+
+mysql> select *from employees;
++------+----------+-------+------------+
+| id   | name     | phone | address    |
++------+----------+-------+------------+
+|    1 | rahul    |   100 | vizag      |
+|    2 | vijay    |   101 | vizainagar |
+|    3 | abhay    |   102 | rajhmundry |
+|    4 | srikanth |   103 | vizag      |
+|    5 | bharat   |   104 | banglore   |
++------+----------+-------+------------+
+5 rows in set (0.00 sec)
+
+
