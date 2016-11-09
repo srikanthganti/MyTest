@@ -1,0 +1,765 @@
+1. GET FULL DETAILS OF ALL PROJECTS
+
+  mysql> select * from projects;
++-----+----------+---------------+
+| jid | jname    | city          |
++-----+----------+---------------+
+| j1  | project1 | london        |
+| j2  | project2 | london        |
+| j3  | project3 | amaravathi    |
+| j4  | project1 | vishakapatnam |
+| j5  | project2 | hyderabad     |
+| j6  | project3 | banglore      |
++-----+----------+---------------+
+6 rows in set (0.00 sec)
+
+2. GET FULL DETAILS OF ALL PROJECTS IN LONDON
+
+mysql> select * from projects where city = 'london';
++-----+----------+--------+
+| jid | jname    | city   |
++-----+----------+--------+
+| j1  | project1 | london |
+| j2  | project2 | london |
++-----+----------+--------+
+2 rows in set (0.03 sec)
+
+3. GET SUPPLIERS NUMBERS FOR SUPPLIERS WHO SUPPLY PROJECT J1
+  
+  mysql> select sid, jid  from spp where jid = 'j1';
++-----+-----+
+| sid | jid |
++-----+-----+
+| s1  | j1  |
+| s3  | j1  |
++-----+-----+
+2 rows in set (0.00 sec)
+
+4. GET ALL THE SHIPPMENTS WHERE THE QUANTITTY IS IN THE RANGE 300 TO 750 INCULSIVE 
+
+
+mysql> select pname, quantity  from parts inner join spp on parts.pid = spp.pid where quantity >=300 and quantity <= 700;
++-------+----------+
+| pname | quantity |
++-------+----------+
+| part1 |      500 |
+| part1 |      600 |
+| part1 |      300 |
+| part2 |      450 |
++-------+----------+
+4 rows in set (0.00 sec)
+
+5. GET ALL PART COLOR/PART CITY pairs 
+
+  mysql> select concat(pname,',', color),concat(pname,',', city) from parts;
++--------------------------+-------------------------+
+| concat(pname,',', color) | concat(pname,',', city) |
++--------------------------+-------------------------+
+| part1,pink               | part1,visakhapatnam     |
+| part2,black              | part2,london            |
+| part1,white              | part1,london            |
+| part2,black              | part2,vishakapatnam     |
+| part1,pink               | part1,amaravathi        |
+| part2,white              | part2,hyderabad         |
++--------------------------+-------------------------+
+6 rows in set (0.00 sec)
+
+6. GET ALL SUPPLIER NUMBER /PART NUMBER / PROJECT NUMBER TRIPLES SUCH THAT THE INDICATED SUPPLIER, PART AND PROJECT ALL ARE COLOCATED
+
+
+mysql> select  suppliers.sid,parts.pid,projects.jid,suppliers.city,parts.city, projects.city  from suppliers natural  join parts natural join  projects;
++-----+-----+-----+---------------+---------------+---------------+
+| sid | pid | jid | city          | city          | city          |
++-----+-----+-----+---------------+---------------+---------------+
+| s1  | p2  | j1  | london        | london        | london        |
+| s4  | p2  | j1  | london        | london        | london        |
+| s1  | p3  | j1  | london        | london        | london        |
+| s4  | p3  | j1  | london        | london        | london        |
+| s1  | p2  | j2  | london        | london        | london        |
+| s4  | p2  | j2  | london        | london        | london        |
+| s1  | p3  | j2  | london        | london        | london        |
+| s4  | p3  | j2  | london        | london        | london        |
+| s6  | p5  | j3  | amaravathi    | amaravathi    | amaravathi    |
+| s2  | p1  | j4  | visakhapatnam | visakhapatnam | visakhapatnam |
+| s5  | p1  | j4  | visakhapatnam | visakhapatnam | visakhapatnam |
+| s2  | p4  | j4  | visakhapatnam | visakhapatnam | visakhapatnam |
+| s5  | p4  | j4  | visakhapatnam | visakhapatnam | visakhapatnam |
++-----+-----+-----+---------------+---------------+---------------+
+13 rows in set (0.00 sec)
+
+
+7. GET ALL SUPPLIER NUMBER /PART NUMBER / PROJECT NUMBER TRIPLES SUCH THAT THE INDICATED SUPPLIER PART AND PROJECT ARE COLOCATED
+
+mysql> select  suppliers.sid,parts.pid,projects.jid,suppliers.city,parts.city, projects.city  from suppliers inner  join parts inner  join  projects where suppliers.city!= projects.city;
++-----+-----+-----+---------------+---------------+---------------+
+| sid | pid | jid | city          | city          | city          |
++-----+-----+-----+---------------+---------------+---------------+
+| s2  | p1  | j1  | visakhapatnam | visakhapatnam | london        |
+| s3  | p1  | j1  | banglore      | visakhapatnam | london        |
+| s5  | p1  | j1  | visakhapatnam | visakhapatnam | london        |
+| s6  | p1  | j1  | amaravathi    | visakhapatnam | london        |
+| s2  | p1  | j2  | visakhapatnam | visakhapatnam | london        |
+| s3  | p1  | j2  | banglore      | visakhapatnam | london        |
+| s5  | p1  | j2  | visakhapatnam | visakhapatnam | london        |
+| s6  | p1  | j2  | amaravathi    | visakhapatnam | london        |
+| s1  | p1  | j3  | london        | visakhapatnam | amaravathi    |
+| s2  | p1  | j3  | visakhapatnam | visakhapatnam | amaravathi    |
+| s3  | p1  | j3  | banglore      | visakhapatnam | amaravathi    |
+| s4  | p1  | j3  | london        | visakhapatnam | amaravathi    |
+| s5  | p1  | j3  | visakhapatnam | visakhapatnam | amaravathi    |
+| s1  | p1  | j4  | london        | visakhapatnam | visakhapatnam |
+| s3  | p1  | j4  | banglore      | visakhapatnam | visakhapatnam |
+| s4  | p1  | j4  | london        | visakhapatnam | visakhapatnam |
+| s6  | p1  | j4  | amaravathi    | visakhapatnam | visakhapatnam |
+| s1  | p1  | j5  | london        | visakhapatnam | hyderabad     |
+| s2  | p1  | j5  | visakhapatnam | visakhapatnam | hyderabad     |
+| s3  | p1  | j5  | banglore      | visakhapatnam | hyderabad     |
+| s4  | p1  | j5  | london        | visakhapatnam | hyderabad     |
+| s5  | p1  | j5  | visakhapatnam | visakhapatnam | hyderabad     |
+| s6  | p1  | j5  | amaravathi    | visakhapatnam | hyderabad     |
+| s1  | p1  | j6  | london        | visakhapatnam | banglore      |
+| s2  | p1  | j6  | visakhapatnam | visakhapatnam | banglore      |
+| s4  | p1  | j6  | london        | visakhapatnam | banglore      |
+| s5  | p1  | j6  | visakhapatnam | visakhapatnam | banglore      |
+| s6  | p1  | j6  | amaravathi    | visakhapatnam | banglore      |
+| s2  | p2  | j1  | visakhapatnam | london        | london        |
+| s3  | p2  | j1  | banglore      | london        | london        |
+| s5  | p2  | j1  | visakhapatnam | london        | london        |
+| s6  | p2  | j1  | amaravathi    | london        | london        |
+| s2  | p2  | j2  | visakhapatnam | london        | london        |
+| s3  | p2  | j2  | banglore      | london        | london        |
+| s5  | p2  | j2  | visakhapatnam | london        | london        |
+| s6  | p2  | j2  | amaravathi    | london        | london        |
+| s1  | p2  | j3  | london        | london        | amaravathi    |
+| s2  | p2  | j3  | visakhapatnam | london        | amaravathi    |
+| s3  | p2  | j3  | banglore      | london        | amaravathi    |
+| s4  | p2  | j3  | london        | london        | amaravathi    |
+| s5  | p2  | j3  | visakhapatnam | london        | amaravathi    |
+| s1  | p2  | j4  | london        | london        | visakhapatnam |
+| s3  | p2  | j4  | banglore      | london        | visakhapatnam |
+| s4  | p2  | j4  | london        | london        | visakhapatnam |
+| s6  | p2  | j4  | amaravathi    | london        | visakhapatnam |
+| s1  | p2  | j5  | london        | london        | hyderabad     |
+| s2  | p2  | j5  | visakhapatnam | london        | hyderabad     |
+| s3  | p2  | j5  | banglore      | london        | hyderabad     |
+| s4  | p2  | j5  | london        | london        | hyderabad     |
+| s5  | p2  | j5  | visakhapatnam | london        | hyderabad     |
+| s6  | p2  | j5  | amaravathi    | london        | hyderabad     |
+| s1  | p2  | j6  | london        | london        | banglore      |
+| s2  | p2  | j6  | visakhapatnam | london        | banglore      |
+| s4  | p2  | j6  | london        | london        | banglore      |
+| s5  | p2  | j6  | visakhapatnam | london        | banglore      |
+| s6  | p2  | j6  | amaravathi    | london        | banglore      |
+| s2  | p3  | j1  | visakhapatnam | london        | london        |
+| s3  | p3  | j1  | banglore      | london        | london        |
+| s5  | p3  | j1  | visakhapatnam | london        | london        |
+| s6  | p3  | j1  | amaravathi    | london        | london        |
+| s2  | p3  | j2  | visakhapatnam | london        | london        |
+| s3  | p3  | j2  | banglore      | london        | london        |
+| s5  | p3  | j2  | visakhapatnam | london        | london        |
+| s6  | p3  | j2  | amaravathi    | london        | london        |
+| s1  | p3  | j3  | london        | london        | amaravathi    |
+| s2  | p3  | j3  | visakhapatnam | london        | amaravathi    |
+| s3  | p3  | j3  | banglore      | london        | amaravathi    |
+| s4  | p3  | j3  | london        | london        | amaravathi    |
+| s5  | p3  | j3  | visakhapatnam | london        | amaravathi    |
+| s1  | p3  | j4  | london        | london        | visakhapatnam |
+| s3  | p3  | j4  | banglore      | london        | visakhapatnam |
+| s4  | p3  | j4  | london        | london        | visakhapatnam |
+| s6  | p3  | j4  | amaravathi    | london        | visakhapatnam |
+| s1  | p3  | j5  | london        | london        | hyderabad     |
+| s2  | p3  | j5  | visakhapatnam | london        | hyderabad     |
+| s3  | p3  | j5  | banglore      | london        | hyderabad     |
+| s4  | p3  | j5  | london        | london        | hyderabad     |
+| s5  | p3  | j5  | visakhapatnam | london        | hyderabad     |
+| s6  | p3  | j5  | amaravathi    | london        | hyderabad     |
+| s1  | p3  | j6  | london        | london        | banglore      |
+| s2  | p3  | j6  | visakhapatnam | london        | banglore      |
+| s4  | p3  | j6  | london        | london        | banglore      |
+| s5  | p3  | j6  | visakhapatnam | london        | banglore      |
+| s6  | p3  | j6  | amaravathi    | london        | banglore      |
+| s2  | p4  | j1  | visakhapatnam | visakhapatnam | london        |
+| s3  | p4  | j1  | banglore      | visakhapatnam | london        |
+| s5  | p4  | j1  | visakhapatnam | visakhapatnam | london        |
+| s6  | p4  | j1  | amaravathi    | visakhapatnam | london        |
+| s2  | p4  | j2  | visakhapatnam | visakhapatnam | london        |
+| s3  | p4  | j2  | banglore      | visakhapatnam | london        |
+| s5  | p4  | j2  | visakhapatnam | visakhapatnam | london        |
+| s6  | p4  | j2  | amaravathi    | visakhapatnam | london        |
+| s1  | p4  | j3  | london        | visakhapatnam | amaravathi    |
+| s2  | p4  | j3  | visakhapatnam | visakhapatnam | amaravathi    |
+| s3  | p4  | j3  | banglore      | visakhapatnam | amaravathi    |
+| s4  | p4  | j3  | london        | visakhapatnam | amaravathi    |
+| s5  | p4  | j3  | visakhapatnam | visakhapatnam | amaravathi    |
+| s1  | p4  | j4  | london        | visakhapatnam | visakhapatnam |
+| s3  | p4  | j4  | banglore      | visakhapatnam | visakhapatnam |
+| s4  | p4  | j4  | london        | visakhapatnam | visakhapatnam |
+| s6  | p4  | j4  | amaravathi    | visakhapatnam | visakhapatnam |
+| s1  | p4  | j5  | london        | visakhapatnam | hyderabad     |
+| s2  | p4  | j5  | visakhapatnam | visakhapatnam | hyderabad     |
+| s3  | p4  | j5  | banglore      | visakhapatnam | hyderabad     |
+| s4  | p4  | j5  | london        | visakhapatnam | hyderabad     |
+| s5  | p4  | j5  | visakhapatnam | visakhapatnam | hyderabad     |
+| s6  | p4  | j5  | amaravathi    | visakhapatnam | hyderabad     |
+| s1  | p4  | j6  | london        | visakhapatnam | banglore      |
+| s2  | p4  | j6  | visakhapatnam | visakhapatnam | banglore      |
+| s4  | p4  | j6  | london        | visakhapatnam | banglore      |
+| s5  | p4  | j6  | visakhapatnam | visakhapatnam | banglore      |
+| s6  | p4  | j6  | amaravathi    | visakhapatnam | banglore      |
+| s2  | p5  | j1  | visakhapatnam | amaravathi    | london        |
+| s3  | p5  | j1  | banglore      | amaravathi    | london        |
+| s5  | p5  | j1  | visakhapatnam | amaravathi    | london        |
+| s6  | p5  | j1  | amaravathi    | amaravathi    | london        |
+| s2  | p5  | j2  | visakhapatnam | amaravathi    | london        |
+| s3  | p5  | j2  | banglore      | amaravathi    | london        |
+| s5  | p5  | j2  | visakhapatnam | amaravathi    | london        |
+| s6  | p5  | j2  | amaravathi    | amaravathi    | london        |
+| s1  | p5  | j3  | london        | amaravathi    | amaravathi    |
+| s2  | p5  | j3  | visakhapatnam | amaravathi    | amaravathi    |
+| s3  | p5  | j3  | banglore      | amaravathi    | amaravathi    |
+| s4  | p5  | j3  | london        | amaravathi    | amaravathi    |
+| s5  | p5  | j3  | visakhapatnam | amaravathi    | amaravathi    |
+| s1  | p5  | j4  | london        | amaravathi    | visakhapatnam |
+| s3  | p5  | j4  | banglore      | amaravathi    | visakhapatnam |
+| s4  | p5  | j4  | london        | amaravathi    | visakhapatnam |
+| s6  | p5  | j4  | amaravathi    | amaravathi    | visakhapatnam |
+| s1  | p5  | j5  | london        | amaravathi    | hyderabad     |
+| s2  | p5  | j5  | visakhapatnam | amaravathi    | hyderabad     |
+| s3  | p5  | j5  | banglore      | amaravathi    | hyderabad     |
+| s4  | p5  | j5  | london        | amaravathi    | hyderabad     |
+| s5  | p5  | j5  | visakhapatnam | amaravathi    | hyderabad     |
+| s6  | p5  | j5  | amaravathi    | amaravathi    | hyderabad     |
+| s1  | p5  | j6  | london        | amaravathi    | banglore      |
+| s2  | p5  | j6  | visakhapatnam | amaravathi    | banglore      |
+| s4  | p5  | j6  | london        | amaravathi    | banglore      |
+| s5  | p5  | j6  | visakhapatnam | amaravathi    | banglore      |
+| s6  | p5  | j6  | amaravathi    | amaravathi    | banglore      |
+| s2  | p6  | j1  | visakhapatnam | hyderabad     | london        |
+| s3  | p6  | j1  | banglore      | hyderabad     | london        |
+| s5  | p6  | j1  | visakhapatnam | hyderabad     | london        |
+| s6  | p6  | j1  | amaravathi    | hyderabad     | london        |
+| s2  | p6  | j2  | visakhapatnam | hyderabad     | london        |
+| s3  | p6  | j2  | banglore      | hyderabad     | london        |
+| s5  | p6  | j2  | visakhapatnam | hyderabad     | london        |
+| s6  | p6  | j2  | amaravathi    | hyderabad     | london        |
+| s1  | p6  | j3  | london        | hyderabad     | amaravathi    |
+| s2  | p6  | j3  | visakhapatnam | hyderabad     | amaravathi    |
+| s3  | p6  | j3  | banglore      | hyderabad     | amaravathi    |
+| s4  | p6  | j3  | london        | hyderabad     | amaravathi    |
+| s5  | p6  | j3  | visakhapatnam | hyderabad     | amaravathi    |
+| s1  | p6  | j4  | london        | hyderabad     | visakhapatnam |
+| s3  | p6  | j4  | banglore      | hyderabad     | visakhapatnam |
+| s4  | p6  | j4  | london        | hyderabad     | visakhapatnam |
+| s6  | p6  | j4  | amaravathi    | hyderabad     | visakhapatnam |
+| s1  | p6  | j5  | london        | hyderabad     | hyderabad     |
+| s2  | p6  | j5  | visakhapatnam | hyderabad     | hyderabad     |
+| s3  | p6  | j5  | banglore      | hyderabad     | hyderabad     |
+| s4  | p6  | j5  | london        | hyderabad     | hyderabad     |
+| s5  | p6  | j5  | visakhapatnam | hyderabad     | hyderabad     |
+| s6  | p6  | j5  | amaravathi    | hyderabad     | hyderabad     |
+| s1  | p6  | j6  | london        | hyderabad     | banglore      |
+| s2  | p6  | j6  | visakhapatnam | hyderabad     | banglore      |
+| s4  | p6  | j6  | london        | hyderabad     | banglore      |
+| s5  | p6  | j6  | visakhapatnam | hyderabad     | banglore      |
+| s6  | p6  | j6  | amaravathi    | hyderabad     | banglore      |
++-----+-----+-----+---------------+---------------+---------------+
+168 rows in set (0.00 sec)
+
+
+8. GET ALL SUPPLIER PART AND PROJECT NUMBERS TRIPLES SUCH THAT NO TWO OF THE INDICATED SUPPLIERS PART VAND PROJECTS ARE COLOCATED
+
+mysql> select  suppliers.sid,parts.pid,projects.jid,suppliers.city,parts.city, projects.city  from suppliers inner  join parts inner  join  projects where suppliers.city!= parts.city and parts.city!= projects.city and suppliers.city!= projects.city;
++-----+-----+-----+---------------+---------------+---------------+
+| sid | pid | jid | city          | city          | city          |
++-----+-----+-----+---------------+---------------+---------------+
+| s3  | p1  | j1  | banglore      | visakhapatnam | london        |
+| s6  | p1  | j1  | amaravathi    | visakhapatnam | london        |
+| s3  | p4  | j1  | banglore      | visakhapatnam | london        |
+| s6  | p4  | j1  | amaravathi    | visakhapatnam | london        |
+| s2  | p5  | j1  | visakhapatnam | amaravathi    | london        |
+| s3  | p5  | j1  | banglore      | amaravathi    | london        |
+| s5  | p5  | j1  | visakhapatnam | amaravathi    | london        |
+| s2  | p6  | j1  | visakhapatnam | hyderabad     | london        |
+| s3  | p6  | j1  | banglore      | hyderabad     | london        |
+| s5  | p6  | j1  | visakhapatnam | hyderabad     | london        |
+| s6  | p6  | j1  | amaravathi    | hyderabad     | london        |
+| s3  | p1  | j2  | banglore      | visakhapatnam | london        |
+| s6  | p1  | j2  | amaravathi    | visakhapatnam | london        |
+| s3  | p4  | j2  | banglore      | visakhapatnam | london        |
+| s6  | p4  | j2  | amaravathi    | visakhapatnam | london        |
+| s2  | p5  | j2  | visakhapatnam | amaravathi    | london        |
+| s3  | p5  | j2  | banglore      | amaravathi    | london        |
+| s5  | p5  | j2  | visakhapatnam | amaravathi    | london        |
+| s2  | p6  | j2  | visakhapatnam | hyderabad     | london        |
+| s3  | p6  | j2  | banglore      | hyderabad     | london        |
+| s5  | p6  | j2  | visakhapatnam | hyderabad     | london        |
+| s6  | p6  | j2  | amaravathi    | hyderabad     | london        |
+| s1  | p1  | j3  | london        | visakhapatnam | amaravathi    |
+| s3  | p1  | j3  | banglore      | visakhapatnam | amaravathi    |
+| s4  | p1  | j3  | london        | visakhapatnam | amaravathi    |
+| s2  | p2  | j3  | visakhapatnam | london        | amaravathi    |
+| s3  | p2  | j3  | banglore      | london        | amaravathi    |
+| s5  | p2  | j3  | visakhapatnam | london        | amaravathi    |
+| s2  | p3  | j3  | visakhapatnam | london        | amaravathi    |
+| s3  | p3  | j3  | banglore      | london        | amaravathi    |
+| s5  | p3  | j3  | visakhapatnam | london        | amaravathi    |
+| s1  | p4  | j3  | london        | visakhapatnam | amaravathi    |
+| s3  | p4  | j3  | banglore      | visakhapatnam | amaravathi    |
+| s4  | p4  | j3  | london        | visakhapatnam | amaravathi    |
+| s1  | p6  | j3  | london        | hyderabad     | amaravathi    |
+| s2  | p6  | j3  | visakhapatnam | hyderabad     | amaravathi    |
+| s3  | p6  | j3  | banglore      | hyderabad     | amaravathi    |
+| s4  | p6  | j3  | london        | hyderabad     | amaravathi    |
+| s5  | p6  | j3  | visakhapatnam | hyderabad     | amaravathi    |
+| s3  | p2  | j4  | banglore      | london        | visakhapatnam |
+| s6  | p2  | j4  | amaravathi    | london        | visakhapatnam |
+| s3  | p3  | j4  | banglore      | london        | visakhapatnam |
+| s6  | p3  | j4  | amaravathi    | london        | visakhapatnam |
+| s1  | p5  | j4  | london        | amaravathi    | visakhapatnam |
+| s3  | p5  | j4  | banglore      | amaravathi    | visakhapatnam |
+| s4  | p5  | j4  | london        | amaravathi    | visakhapatnam |
+| s1  | p6  | j4  | london        | hyderabad     | visakhapatnam |
+| s3  | p6  | j4  | banglore      | hyderabad     | visakhapatnam |
+| s4  | p6  | j4  | london        | hyderabad     | visakhapatnam |
+| s6  | p6  | j4  | amaravathi    | hyderabad     | visakhapatnam |
+| s1  | p1  | j5  | london        | visakhapatnam | hyderabad     |
+| s3  | p1  | j5  | banglore      | visakhapatnam | hyderabad     |
+| s4  | p1  | j5  | london        | visakhapatnam | hyderabad     |
+| s6  | p1  | j5  | amaravathi    | visakhapatnam | hyderabad     |
+| s2  | p2  | j5  | visakhapatnam | london        | hyderabad     |
+| s3  | p2  | j5  | banglore      | london        | hyderabad     |
+| s5  | p2  | j5  | visakhapatnam | london        | hyderabad     |
+| s6  | p2  | j5  | amaravathi    | london        | hyderabad     |
+| s2  | p3  | j5  | visakhapatnam | london        | hyderabad     |
+| s3  | p3  | j5  | banglore      | london        | hyderabad     |
+| s5  | p3  | j5  | visakhapatnam | london        | hyderabad     |
+| s6  | p3  | j5  | amaravathi    | london        | hyderabad     |
+| s1  | p4  | j5  | london        | visakhapatnam | hyderabad     |
+| s3  | p4  | j5  | banglore      | visakhapatnam | hyderabad     |
+| s4  | p4  | j5  | london        | visakhapatnam | hyderabad     |
+| s6  | p4  | j5  | amaravathi    | visakhapatnam | hyderabad     |
+| s1  | p5  | j5  | london        | amaravathi    | hyderabad     |
+| s2  | p5  | j5  | visakhapatnam | amaravathi    | hyderabad     |
+| s3  | p5  | j5  | banglore      | amaravathi    | hyderabad     |
+| s4  | p5  | j5  | london        | amaravathi    | hyderabad     |
+| s5  | p5  | j5  | visakhapatnam | amaravathi    | hyderabad     |
+| s1  | p1  | j6  | london        | visakhapatnam | banglore      |
+| s4  | p1  | j6  | london        | visakhapatnam | banglore      |
+| s6  | p1  | j6  | amaravathi    | visakhapatnam | banglore      |
+| s2  | p2  | j6  | visakhapatnam | london        | banglore      |
+| s5  | p2  | j6  | visakhapatnam | london        | banglore      |
+| s6  | p2  | j6  | amaravathi    | london        | banglore      |
+| s2  | p3  | j6  | visakhapatnam | london        | banglore      |
+| s5  | p3  | j6  | visakhapatnam | london        | banglore      |
+| s6  | p3  | j6  | amaravathi    | london        | banglore      |
+| s1  | p4  | j6  | london        | visakhapatnam | banglore      |
+| s4  | p4  | j6  | london        | visakhapatnam | banglore      |
+| s6  | p4  | j6  | amaravathi    | visakhapatnam | banglore      |
+| s1  | p5  | j6  | london        | amaravathi    | banglore      |
+| s2  | p5  | j6  | visakhapatnam | amaravathi    | banglore      |
+| s4  | p5  | j6  | london        | amaravathi    | banglore      |
+| s5  | p5  | j6  | visakhapatnam | amaravathi    | banglore      |
+| s1  | p6  | j6  | london        | hyderabad     | banglore      |
+| s2  | p6  | j6  | visakhapatnam | hyderabad     | banglore      |
+| s4  | p6  | j6  | london        | hyderabad     | banglore      |
+| s5  | p6  | j6  | visakhapatnam | hyderabad     | banglore      |
+| s6  | p6  | j6  | amaravathi    | hyderabad     | banglore      |
++-----+-----+-----+---------------+---------------+---------------+
+92 rows in set (0.00 sec)
+
+9. GET FULL DETAILS FOR PARTS SUPPLIED BY SUPPLIER IN LONDON
+
+mysql> select * from parts where pid in (select pid from spp where sid in (select sid from suppliers where city ='london'));  +-----+-------+-------+--------+---------------+
+| pid | pname | color | weight | city          |
++-----+-------+-------+--------+---------------+
+| p1  | part1 | pink  |     70 | visakhapatnam |
+| p3  | part1 | white |     55 | london        |
++-----+-------+-------+--------+---------------+
+2 rows in set (0.00 sec)
+
+10.GET PART NUMBER FOR PARTS SUPPLIED FOR BY A SUPPLIER IN LONDON TO A PROJECT IN LONDON
+
+mysql> select sid,pid,jid from spp natural join suppliers natural join projects where suppliers.city ='london' and projects.city = 'london';
++-----+-----+-----+
+| sid | pid | jid |
++-----+-----+-----+
+| s1  | p1  | j1  |
+| s4  | p3  | j2  |
++-----+-----+-----+
+2 rows in set (0.00 sec)
+
+11. GET ALL PAIRS OF CITY NAMES SUCH THAT A SUPPLIER IN THE FIRST CITY SUPPLIES A PROJECT IN THE SECOND CITY 
+
+mysql> select suppliers.city, projects.city from suppliers, projects,spp  where suppliers.sid = spp.sid and projects.jid = spp.jid;
++---------------+------------+
+| city          | city       |
++---------------+------------+
+| london        | london     |
+| banglore      | london     |
+| visakhapatnam | london     |
+| london        | london     |
+| visakhapatnam | amaravathi |
++---------------+------------+
+5 rows in set (0.00 sec)
+
+12. GET PART NUMBERS FOR PARTS SUPPLIED TO ANY PROJECT BY A SUPPLIER IN THE SAME CITY AS THAT PROJECT 
+
+mysql> select pid, sid,jid  from spp natural join suppliers natural join projects where suppliers.city = projects.city;
++-----+-----+-----+
+| pid | sid | jid |
++-----+-----+-----+
+| p1  | s1  | j1  |
+| p3  | s4  | j2  |
++-----+-----+-----+
+2 rows in set (0.00 sec)
+
+13. GET PROJECT NUMBERS FOR PROJECTS SUPPLIED BY AT LEAST ONE SUPPLIER NOT IN THE SAME CITY
+
+mysql> select spp.jid,spp.sid from spp,suppliers,projects  where spp.sid = suppliers.sid and spp.jid = projects.jid and suppliers.city != projects.city;
++-----+-----+
+| jid | sid |
++-----+-----+
+| j1  | s3  |
+| j2  | s2  |
+| j3  | s5  |
++-----+-----+
+3 rows in set (0.00 sec)
+
+
+14. GET ALL PAIRS OF PART NUMBERS SUCH THAT SOME SUPPLIERS SUPPLIES BOTH THE INDICATED PARTS
+ 
+
+mysql> select a.sid,a.pid,b.pid from spp a,spp b where a.sid = b.sid;
++-----+-----+-----+
+| sid | pid | pid |
++-----+-----+-----+
+| s1  | p1  | p1  |
+| s1  | p1  | p2  |
+| s1  | p1  | p3  |
+| s3  | p1  | p1  |
+| s1  | p2  | p1  |
+| s1  | p2  | p2  |
+| s1  | p2  | p3  |
+| s1  | p3  | p1  |
+| s1  | p3  | p2  |
+| s1  | p3  | p3  |
+| s2  | p3  | p3  |
+| s4  | p3  | p3  |
+| s5  | p4  | p4  |
++-----+-----+-----+
+13 rows in set (0.00 sec)
+
+
+mysql> select a.sid,a.pid,b.pid from spp a,spp b where a.sid = b.sid and a.pid != b.pid;
++-----+-----+-----+
+| sid | pid | pid |
++-----+-----+-----+
+| s1  | p1  | p2  |
+| s1  | p1  | p3  |
+| s1  | p2  | p1  |
+| s1  | p2  | p3  |
+| s1  | p3  | p1  |
+| s1  | p3  | p2  |
++-----+-----+-----+
+6 rows in set (0.00 sec)
+
+
+15. GET THE TOTAL NUMBER OF PROJECTS SUPPLIED BY SUPPLIER S1
+
+  mysql> select jid from spp where sid = 's1';
++-----+
+| jid |
++-----+
+| j1  |
++-----+
+1 row in set (0.01 sec)
+
+16. GET THE TOTAL QUANTITY OF PART P1 SUPPLIED BY SUPPLIER S1
+ 
+ mysql> select quantity from spp where sid='s1' and pid = 'p1';
++----------+
+| quantity |
++----------+
+|      800 |
++----------+
+1 row in set (0.00 sec)
+
+17. FOR EACH PART BEING SUPPLIED TO A PROJECT , GET THE PART NUMBER, PROJECT NUMBER AND THE CORRESPONDING TOTAL QUANTITY
+
+mysql> select pid,jid,pname,quantity from spp natural join parts;
++-----+-----+-------+----------+
+| pid | jid | pname | quantity |
++-----+-----+-------+----------+
+| p1  | j1  | part1 |      800 |
+| p3  | j2  | part1 |      500 |
+| p1  | j1  | part1 |      600 |
+| p3  | j2  | part1 |      300 |
+| p4  | j3  | part2 |      450 |
++-----+-----+-------+----------+
+5 rows in set (0.00 sec)
+
+18. GET THE PART NUMBERS OF PARTS SUPPLIED TO SOME PROJECTIN AN AVERAGE QUANTITY OF MORE THAN 350
+
+mysql> select pid from spp where quantity > 350;
++-----+
+| pid |
++-----+
+| p1  |
+| p3  |
+| p1  |
+| p4  |
++-----+
+4 rows in set (0.00 sec)
+
+19. GET PROJECT NAMES FOR PROJECTS SUPPLIED BY SUPPLIER S1
+
+mysql> select sid , jid , jname from spp natural join projects where sid = 's1'  ;
++-----+-----+----------+
+| sid | jid | jname    |
++-----+-----+----------+
+| s1  | j1  | project1 |
++-----+-----+----------+
+1 row in set (0.00 sec)
+
+20. gGET COLORS OF PARTSSUPPLIED BY SUPPLIER S1
+
+mysql> select sid,pid,color from spp natural join parts where sid = 's1';
++-----+-----+-------+
+| sid | pid | color |
++-----+-----+-------+
+| s1  | p1  | pink  |
++-----+-----+-------+
+1 row in set (0.00 sec)
+
+21. GET THE PART NUMBERS FOR PARTS SUPPLIED TO ANY PROJECT IN LONDON
+
+mysql> select pid from spp where jid in(select jid from projects where city = 'london');
++-----+
+| pid |
++-----+
+| p1  |
+| p1  |
+| p3  |
+| p3  |
++-----+
+4 rows in set (0.00 sec)
+
+22. GET PROJECT NUMBERS FOR PROJECTS USING ATLEAST ONE PART AVAILABLE FROM SUPPLIER S1
+
+mysql> select jid from spp where sid = 's1';
++-----+
+| jid |
++-----+
+| j1  |
++-----+
+1 row in set (0.00 sec)
+
+23.GET SUPPLIER NUMBER FOR SUPPLIERS supplying atleast one pART SUPPLIED BY AT LEAST ONE SUPPLIER WHO SUPPLIES ATLEAST ONE RED PART 
+
+mysql> select sid, pid from spp natural join parts where parts.color = 'red';
++-----+-----+
+| sid | pid |
++-----+-----+
+| s1  | p1  |
+| s3  | p1  |
++-----+-----+
+2 rows in set (0.00 sec)
+
+24. GET SUPPLIERS NUMBERS FOR SUPPLIERS WITH A STATUS LOWER THAN THAT OF SUPPLIER S1
+
+mysql> select sid from suppliers where status < any (select status from suppliers where sid ='s1');
++-----+
+| sid |
++-----+
+| s4  |
++-----+
+1 row in set (0.00 sec)
+
+
+25. GET PROJECT NUMBERS FOR PROJECTS WHOSE CITY IS FIRST IN ALPHABETICAL LIST OF SUCH CITIES
+
+mysql> select jid from projects  order by city asc limit 1;
++-----+
+| jid |
++-----+
+| j3  |
++-----+
+1 row in set (0.00 sec)
+
+26. GET PROJECT NUMBERS FOR PROJECTNS SUPPLIED WITH PART P1 IN AN AVERAGE QUANTITY GREATER THAN THE GREATEST QUANTITY IN WHICH ANY PART IS SUPPLIED TO PROJECT J1
+
+mysql> select jid,avg(quantity) from spp  where pid ='p1' group by jid having avg(quantity) >  (select max( quantity) from spp where jid = 'j1');
++-----+---------------+
+| jid | avg(quantity) |
++-----+---------------+
+| j5  |      980.0000 |
++-----+---------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+27. GET SUPPLIER NUMBERS FOR SUPPLIERS SUPPLYING SOME  PROJECT WITH PART P1 IN A QUANTITY GREATER THAN THE AVERAGE SHIPMENT QUANTITY OF PART P1 FOR THAT PROJECT 
+
+select * from spp where pid="p1" and jid="j1" and quantity>(select avg(quantity) from spp where pid="p1");
++-----+-----+-----+----------+
+| sid | pid | jid | quantity |
++-----+-----+-----+----------+
+| s1  | p1  | j1  |      800 |
++-----+-----+-----+----------+
+1 row in set (0.01 sec)
+
+
+
+
+
+
+
+ 
+
+28. GET PROJECT NUMBERS FOR PROJECTS NOT SUPPLIED WITH ANY RED PART BY A LONDON SUPPLIER
+
+mysql> select jid from spp where (pid,sid) in (select parts.pid,suppliers.sid from parts,suppliers  where color !='red'and suppliers. city != 'london');
++-----+
+| jid |
++-----+
+| j2  |
+| j3  |
++-----+
+2 rows in set (0.00 sec)
+
+29. GET PROJECT NUMBERS FOR PROJECTS SUPPLIED ENTIRELY BY SUPPLIER S1
+
+
+mysql> select jid,sid from spp where sid ='s1' and jid in (select jid from spp group by jid having count(jid) = 1);
++-----+-----+
+| jid | sid |
++-----+-----+
+| j4  | s1  |
+| j5  | s1  |
++-----+-----+
+2 rows in set (0.00 sec)
+
+30. GET PART NUMBERS FOR PARTS SUPPLIED TO ALL PROJECTS IN LONDON
+ 
+ mysql> select distinct pid, jid,projects.city from spp natural join projects where projects.city = 'london';
++-----+-----+--------+
+| pid | jid | city   |
++-----+-----+--------+
+| p1  | j1  | london |
+| p3  | j2  | london |
++-----+-----+--------+
+2 rows in set (0.00 sec)
+
+31. GET SUPPLIERS NUMBERS TO SUPPLIERS WHO SUPPLY SAME PART TO ALL PROOJECTS
+32.GET PROJECT NUMBERS FOR PROJECTS SUPPLIED WITH ATLEAST ALL PARTS AVAILABLE FROM SUPPLIERS S1
+
+   SELECT jid FROM projects,parts WHERE EXISTS(SELECT * FROM spp WHERE spp.jid=projects.jid AND spp.pid=parts.pid AND spp.sid='S1');
++-----+
+| jid |
++-----+
+| j1  |
+| j1  |
+| j4  |
+| j1  |
+| j5  |
++-----+
+
+33. GET ALL CITIES IN WHICH AT LEAST ONE SUPPLIER PART AND PROJECT IS LOCATED
+
+mysql> select suppliers.city from suppliers union select  parts.city from parts  union select  projects.city from projects;
++---------------+
+| city          |
++---------------+
+| london        |
+| visakhapatnam |
+| banglore      |
+| amaravathi    |
+| hyderabad     |
++---------------+
+5 rows in set (0.00 sec)
+
+34. GET PART NUMBERS FOR PARTS THAT ARE SUPPLIED EITHER BY A LONDON SUPLIER OR TO A LONDON PROJECT
+
+mysql> select pid,sid,jid  from spp natural join suppliers where suppliers.city = 'london' union select pid,sid,jid from spp natural join projects where projects.city = 'london';
++-----+-----+-----+
+| pid | sid | jid |
++-----+-----+-----+
+| p1  | s1  | j1  |
+| p2  | s1  | j4  |
+| p3  | s1  | j5  |
+| p3  | s4  | j2  |
+| p1  | s3  | j1  |
+| p3  | s2  | j2  |
++-----+-----+-----+
+6 rows in set (0.00 sec)
+
+35. GET SUPPLIER NUMBER/PART NUMBER PAIRS SUCH THAT THE INDICATED SUPPLIER DOES NOT SUPPLY THE INDICATED PART
+
+mysql> select suppliers.sid,parts.pid from suppliers cross  join parts  where not exists (select *  from spp  where spp.sid = suppliers.sid and spp.pid = parts.pid);
++-----+-----+
+| sid | pid |
++-----+-----+
+| s2  | p1  |
+| s4  | p1  |
+| s5  | p1  |
+| s6  | p1  |
+| s2  | p2  |
+| s3  | p2  |
+| s4  | p2  |
+| s5  | p2  |
+| s6  | p2  |
+| s3  | p3  |
+| s5  | p3  |
+| s6  | p3  |
+| s1  | p4  |
+| s2  | p4  |
+| s3  | p4  |
+| s4  | p4  |
+| s6  | p4  |
+| s1  | p5  |
+| s2  | p5  |
+| s3  | p5  |
+| s4  | p5  |
+| s5  | p5  |
+| s6  | p5  |
+| s1  | p6  |
+| s2  | p6  |
+| s3  | p6  |
+| s4  | p6  |
+| s5  | p6  |
+| s6  | p6  |
++-----+-----+
+29 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+        
+
+
+
+ 

@@ -1,0 +1,46 @@
+mysql> select * from employees;
++----+-----------+-------+------------+
+| id | name      | phone | address    |
++----+-----------+-------+------------+
+|  1 | rahul     |   100 | vizag      |
+|  2 | vijay     |   101 | vizainagar |
+|  3 | abhay     |   102 | rajhmundry |
+|  4 | srikanth  |   103 | vizag      |
+|  5 | bharat    |   104 | banglore   |
+|  6 | kasi      |   105 | vizag      |
+|  7 | sneha     |   106 | hyderabad  |
+|  8 | gayatri   |   107 | vizainagar |
+| 10 | mounika   |   108 | vizag      |
+| 11 | mounika k |   109 | karakpur   |
++----+-----------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> delete from xyz where id = 16;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * fro xyz;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'fro xyz' at line 1
+mysql> select * from xyz;
++------+--------------+------+
+| xid  | xname        | id   |
++------+--------------+------+
+|    1 | lion         |    1 |
+|    6 | hippopotamus |    6 |
++------+--------------+------+
+2 rows in set (0.00 sec)
+
+mysql> alter table xyz add foreign key (id) references employees(id);
+Query OK, 2 rows affected (1.21 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc xyz;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| xid   | int(5)      | YES  |     | NULL    |       |
+| xname | varchar(30) | YES  |     | NULL    |       |
+| id    | int(5)      | YES  | MUL | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+

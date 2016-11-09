@@ -1,0 +1,46 @@
+mysql> select * from employees;
++----+----------+-------+------------+
+| id | name     | phone | address    |
++----+----------+-------+------------+
+|  1 | rahul    |   100 | vizag      |
+|  2 | vijay    |   101 | vizainagar |
+|  3 | abhay    |   102 | rajhmundry |
+|  4 | srikanth |   103 | vizag      |
+|  5 | bharat   |   104 | banglore   |
+|  6 | kasi     |   105 | vizag      |
+|  7 | sneha    |   106 | hyderabad  |
++----+----------+-------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from benefits;
++------+--------+---------+--------------+
+| id   | salary | vehicle | taxreduction |
++------+--------+---------+--------------+
+|    2 |  20000 | yes     |         2000 |
+|    3 |  30000 | no      |         3000 |
+|    5 |  40000 | no      |         4000 |
+|    6 |  50000 | no      |         5000 |
+|    4 |  10000 | yes     |         1000 |
+|    7 |  70000 | no      |         1000 |
+|    8 |  80000 | yes     |         8000 |
+|   10 |  15000 | yes     |         1500 |
++------+--------+---------+--------------+
+8 rows in set (0.00 sec)
+
+mysql> select * from employees left outer  join benefits on employees.id = benefits.id union select * from employees right outer join benefits on employees.id = benefits.id;
++------+----------+-------+------------+------+--------+---------+--------------+
+| id   | name     | phone | address    | id   | salary | vehicle | taxreduction |
++------+----------+-------+------------+------+--------+---------+--------------+
+|    2 | vijay    |   101 | vizainagar |    2 |  20000 | yes     |         2000 |
+|    3 | abhay    |   102 | rajhmundry |    3 |  30000 | no      |         3000 |
+|    5 | bharat   |   104 | banglore   |    5 |  40000 | no      |         4000 |
+|    6 | kasi     |   105 | vizag      |    6 |  50000 | no      |         5000 |
+|    4 | srikanth |   103 | vizag      |    4 |  10000 | yes     |         1000 |
+|    7 | sneha    |   106 | hyderabad  |    7 |  70000 | no      |         1000 |
+|    1 | rahul    |   100 | vizag      | NULL |   NULL | NULL    |         NULL |
+| NULL | NULL     |  NULL | NULL       |    8 |  80000 | yes     |         8000 |
+| NULL | NULL     |  NULL | NULL       |   10 |  15000 | yes     |         1500 |
++------+----------+-------+------------+------+--------+---------+--------------+
+9 rows in set (0.00 sec)
+
+

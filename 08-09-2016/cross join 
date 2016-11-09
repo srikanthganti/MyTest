@@ -1,0 +1,33 @@
+
+mysql> select * from employees cross join benefits;
++----+----------+-------+------------+------+--------+---------+--------------+
+| id | name     | phone | address    | e_id | salary | vehicle | taxreduction |
++----+----------+-------+------------+------+--------+---------+--------------+
+|  1 | rahul    |   100 | vizag      |    2 |  20000 | yes     |         2000 |
+|  2 | vijay    |   101 | vizainagar |    2 |  20000 | yes     |         2000 |
+|  3 | abhay    |   102 | rajhmundry |    2 |  20000 | yes     |         2000 |
+|  4 | srikanth |   103 | vizag      |    2 |  20000 | yes     |         2000 |
+|  5 | bharat   |   104 | banglore   |    2 |  20000 | yes     |         2000 |
+|  1 | rahul    |   100 | vizag      |    3 |  30000 | no      |         3000 |
+|  2 | vijay    |   101 | vizainagar |    3 |  30000 | no      |         3000 |
+|  3 | abhay    |   102 | rajhmundry |    3 |  30000 | no      |         3000 |
+|  4 | srikanth |   103 | vizag      |    3 |  30000 | no      |         3000 |
+|  5 | bharat   |   104 | banglore   |    3 |  30000 | no      |         3000 |
+|  1 | rahul    |   100 | vizag      |    5 |  40000 | no      |         4000 |
+|  2 | vijay    |   101 | vizainagar |    5 |  40000 | no      |         4000 |
+|  3 | abhay    |   102 | rajhmundry |    5 |  40000 | no      |         4000 |
+|  4 | srikanth |   103 | vizag      |    5 |  40000 | no      |         4000 |
+|  5 | bharat   |   104 | banglore   |    5 |  40000 | no      |         4000 |
+|  1 | rahul    |   100 | vizag      |    6 |  50000 | no      |         5000 |
+|  2 | vijay    |   101 | vizainagar |    6 |  50000 | no      |         5000 |
+|  3 | abhay    |   102 | rajhmundry |    6 |  50000 | no      |         5000 |
+|  4 | srikanth |   103 | vizag      |    6 |  50000 | no      |         5000 |
+|  5 | bharat   |   104 | banglore   |    6 |  50000 | no      |         5000 |
+|  1 | rahul    |   100 | vizag      |    4 |  10000 | yes     |         1000 |
+|  2 | vijay    |   101 | vizainagar |    4 |  10000 | yes     |         1000 |
+|  3 | abhay    |   102 | rajhmundry |    4 |  10000 | yes     |         1000 |
+|  4 | srikanth |   103 | vizag      |    4 |  10000 | yes     |         1000 |
+|  5 | bharat   |   104 | banglore   |    4 |  10000 | yes     |         1000 |
++----+----------+-------+------------+------+--------+---------+--------------+
+25 rows in set (0.00 sec)
+
