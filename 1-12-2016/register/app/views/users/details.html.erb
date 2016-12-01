@@ -1,0 +1,5 @@
+<%= simple_form_for @u, :url => url_for(:action => 'verify', :controller => 'users'),:method => 'get' do |t| %>
+    <%= t.input :username %>
+    <%= t.input :password %>
+    <%= t.button :submit, 'login' %>
+ <% end %>
