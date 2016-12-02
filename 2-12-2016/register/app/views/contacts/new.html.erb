@@ -1,0 +1,12 @@
+<%= simple_form_for @contact do |f| %>
+   <%= f.input :first_name %>
+   <%= f.input :last_name %>
+   <%= f.input :contact_type, :collection => ["Director", "Manager", "Developer", "Tester", "HR"],:prompt => "select"%>
+   <%= f.input :address1 %>
+   <%= f.input :address2 %>
+   <%= f.input :city %>
+   <%=f.input :phone_number %>
+   <%= f.input :state %> 
+   <%= f.input :birthday %>
+   <%= f.button :submit %>
+  <% end %>

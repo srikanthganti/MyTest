@@ -1,0 +1,32 @@
+<h1>List of contacts</h1>
+
+<table>
+ <tr>
+   <th>First_Name</th>
+   <th>Contact_Type</th>
+   <th>Address</th>
+   <th>City</th>
+   <th>phone_number</th>
+   <th>State</th>
+   <th>Birthday</th>
+ </tr>
+
+ <% @contacts.each do |f| %>
+   <tr>  
+     <td><%= f.first_name%></td>
+     <td><%= f.contact_type %></td>
+     <td><%= f.address1 %></td>
+     <td><%= f.city %></td>
+     <td><%= f.phone_number %></td>
+     <td><%= f.state %></td>
+     <td><%= f.birthday %></td>
+     <td></td>
+     <td><%= link_to 'destroy', f, method: :delete,data: {confirm: 'Are you sure'} %></td>
+     <td><%= link_to 'show', f , remote: :true%></td>
+    </tr>
+ <% end %>
+</table>
+
+<%= link_to 'Back', users_verify_path %>
+
+<div class="show_contact"></div>

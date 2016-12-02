@@ -1,0 +1,67 @@
+<h2>Sign up</h2>
+<%resource.build_address%>
+<%resource.build_profile%>
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :email, required: true, autofocus: true %>
+    <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
+    <%= f.input :password_confirmation, required: true %>
+  </div>
+  <%= f.input :first_name%>
+<%= f.input :middle_name%>
+<%= f.input :last_name%>
+<%= f.input :gender ,:collection=> ['male','female'], as:  :radio_buttons%>
+<%= f.input :mobile %>
+<%= f.input :email, placeholder: 'user@domain.com' %>
+<%= f.input :other_emails%>
+
+<%= f.input :rank_id %>
+<%= f.input :paid_rankid %>
+<%= f.input :landline %>
+<%= f.input :prefered_language, :collection => ['Telugu','Tamil','kannada','Hindi','English'],:prompt => 'Select' %>
+
+<%= f.input :username %>
+<%= f.input :password %>
+<%= f.input :password_confirmation %>
+<h1 align = center ><strong> PROFILE </strong></h1>
+<%= f.simple_fields_for :profile do |l| %>
+	  <%= l.input :first_name %>
+      <%= l.input :last_name  %>
+      <%= l.input :phone %>
+      <%= l.input :email %>
+      <%= l.input :fax %>
+      <%= l.input :cell %>
+      <%= l.input :address %>
+      <%= l.input :rank_id %>
+      <%= l.input :gender %> 
+      <%= l.input :education %>
+      <%= l.input :hometown %>
+      <%= l.input :stories %>
+      <%= l.input :movies %>
+      <%= l.input :phone_visibility %>
+      <%= l.input :address_visibility %>
+      <%= l.input :email_visibility %>
+      <%= l.input :other_emails %>
+  <% end %>
+  <h1 align = center ><strong> ADDRESS </strong></h1>
+
+  <%= f.simple_fields_for :address do |l| %>
+      <%= l.input :address1, as: :text %>
+      <%= l.input :address2, as: :text %>
+      <%= l.input :zip %>
+      <%= l.input :fax %>
+      <%= l.input :country, :collection => ['India','Pakistan','Srilanka','Bangladesh','Neatherlands'],:prompt => 'Select' %>
+      <%= l.input :state, :collection => ['Andhra pradesh ','Tamil nadu','Karnataka','Kerala','Maharastra'],:prompt => 'Select' %>
+      <%= l.input :city, :collection => ['Vizag','Vijayawada','Vizainagaram','Srikakulam','howrangabad'],:prompt => 'Select' %>
+<% end %>
+
+
+ 
+  <div class="form-actions">
+    <%= f.button :submit, "Sign up" %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

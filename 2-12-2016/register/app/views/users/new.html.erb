@@ -1,0 +1,47 @@
+<%= simple_form_for @user do |f| %>
+<%= f.input :first_name%>
+<%= f.input :middle_name%>
+<%= f.input :last_name%>
+<%= f.input :gender ,:collection=> ['male','female'], as:  :radio_buttons%>
+<%= f.input :mobile %>
+<%= f.input :email, placeholder: 'user@domain.com' %>
+<%= f.input :other_emails%>
+<%= f.input :fax %>
+<%= f.input :rank_id %>
+<%= f.input :paid_rankid %>
+<%= f.input :landline %>
+<%= f.input :prefered_language, :collection => ['Telugu','Tamil','kannada','Hindi','English'],:prompt => 'Select' %>
+<%= f.input :address1, as: :text %>
+<%= f.input :address2, as: :text %>
+<%= f.input :zip %>
+<%= f.input :country, :collection => ['India','Pakistan','Srilanka','Bangladesh','Neatherlands'],:prompt => 'Select' %>
+<%= f.input :state, :collection => ['Andhra pradesh ','Tamil nadu','Karnataka','Kerala','Maharastra'],:prompt => 'Select' %>
+ <%= f.input :city, :collection => ['Vizag','Vijayawada','Vizainagaram','Srikakulam','howrangabad'],:prompt => 'Select' %>
+<%= f.input :username %>
+<%= f.input :password %>
+<%= f.input :password_confirmation %>
+<h1 align = center ><strong> PROFILE </strong></h1>
+<%= f.simple_fields_for :profile do |l| %>
+	  <%= l.input :first_name %>
+      <%= l.input :last_name  %>
+      <%= l.input :phone %>
+      <%= l.input :email %>
+      <%= l.input :fax %>
+      <%= l.input :cell %>
+      <%= l.input :address %>
+      <%= l.input :rank_id %>
+      <%= l.input :gender %> 
+      <%= l.input :education %>
+      <%= l.input :hometown %>
+      <%= l.input :stories %>
+      <%= l.input :movies %>
+      <%= l.input :phone_visibility %>
+      <%= l.input :address_visibility %>
+      <%= l.input :email_visibility %>
+      <%= l.input :other_emails %>
+<% end %>
+<%= f.button :submit %>
+<% end %>
+
+
+
